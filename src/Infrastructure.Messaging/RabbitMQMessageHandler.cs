@@ -8,7 +8,7 @@ namespace Infrastructure.Messaging;
 
 public class RabbitMQMessageHandler : IMessageHandler
 {
-    private const int DEFAULT_PORT = 5672;
+    private const int DEFAULT_PORT = 15672;
     private readonly List<string> _hosts;
     private readonly string _username;
     private readonly string _password;

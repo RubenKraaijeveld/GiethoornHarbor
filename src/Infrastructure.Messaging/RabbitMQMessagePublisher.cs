@@ -7,7 +7,7 @@ namespace Infrastructure.Messaging;
 
 public sealed class RabbitMQMessagePublisher : IMessagePublisher, IDisposable
 {
-    private const int DEFAULT_PORT = 5672;
+    private const int DEFAULT_PORT = 15672;
     private readonly List<string> _hosts;
     private readonly int _port;
     private readonly string _username;
