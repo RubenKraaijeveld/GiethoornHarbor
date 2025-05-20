@@ -44,6 +44,39 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
+  shipsmanagementapi:
+    image: giethoornharbor/shipsmanagementapi:1.0
+    build: ShipsManagementAPI
+    depends_on:
+      - rabbitmq
+      - sqlservergh
+    ports:
+      - "5100"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  securitymanagementapi:
+    image: giethoornharbor/securitymanagementapi:1.0
+    build: SecurityManagementAPI
+    depends_on:
+      - rabbitmq
+      - sqlservergh
+    ports:
+      - "5300"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  servicemanagementapi:
+    image: giethoornharbor/servicemanagementapi:1.0
+    build: ServiceManagementAPI
+    depends_on:
+      - rabbitmq
+      - sqlservergh
+    ports:
+      - "5400"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
   auditlogservice:
     image: giethoornharbor/auditlogservice:1.0
     build: AuditlogService
