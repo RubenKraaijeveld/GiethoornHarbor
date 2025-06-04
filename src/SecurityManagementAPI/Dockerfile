@@ -5,25 +5,27 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
+EXPOSE 8081
 
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ShipsManagementAPI.csproj", "."]
-RUN dotnet restore "./ShipsManagementAPI.csproj"
+COPY ["Directory.Packages.props", "."]
+COPY ["SecurityManagementAPI.csproj", "."]
+RUN dotnet restore "./SecurityManagementAPI/SecurityManagementAPI.csproj"
 COPY . .
-WORKDIR "/src/ShipsManagementAPI"
-RUN dotnet build "./ShipsManagementAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/SecurityManagementAPI"
+RUN dotnet build "./SecurityManagementAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./ShipsManagementAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./SecurityManagementAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ShipsManagementAPI.dll"]
+ENTRYPOINT ["dotnet", "SecurityManagementAPI.dll"]
